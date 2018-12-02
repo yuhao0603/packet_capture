@@ -16,7 +16,9 @@
 #include <unistd.h>
 #include <linux/in.h>
 #include <linux/if_ether.h>
+#include "base.h"
 #include "error.h"
+#include "proto.h"
 
 #define HOST_NAME_MAX 128
 #define RECV_MAX_LEN  2048
