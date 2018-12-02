@@ -7,15 +7,17 @@
 
 #ifndef _PROTO_H
 #define _PROTO_H
+
 typedef struct tag_IPHeader{
-    uchar v_len;        //前4bit版本号后4bit是ip头长
-    uchar tos;          //differentiated services field
-    ushort total_len;   //ip包的总长度
-    ushort id_info;     //身份信息
-    uchar  flag;        //三位标志位，第一个bit是保留字段
-                                //第二bit是是否可以分片，的标志位1代表不可以分片
-                                //第三个代表是否有下一个分片，1代表有
-    ushort frag_offset; //分片偏移
+    uchar head_len:4;       //4bit是ip头长
+    uchar version:4;        //前4bit版本号
+    uchar tos;              //differentiated services field
+    ushort total_len;       //ip包的总长度
+    ushort id_info;         //身份信息
+    uchar  reverse:1;       //一个bit是保留字段
+    uchar  can_frag:1;      //是否可以分片，的标志位1代表不可以分
+    uchar  has_next_frag:1; //是否有下一个分片，1代表有
+    ushort frag_offset:13;  //分片偏移
     uchar  ttl;
     uchar  proto_id;
     ushort head_chechsum;
@@ -51,4 +53,13 @@ typedef struct tag_TCPHeader{
     ushort urgent_pointer;
 }TCP_HEADER_S;
 
+#define IP_HEADER_LEN  sizeof(IP_HEADER_S)
+#define UDP_HEADER_LEN sizeof(UDP_HEADER_S)
+#define TCP_HEADER_LEN sizeof(TCP_HEADER_S)
+
+typedef enum tagTransProtoType{
+    PROTO_TCP,
+    PROTO_UDP,
+    PROTO_MAX
+}TRANS_PROTO_E;
 #endif

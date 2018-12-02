@@ -19,6 +19,7 @@
 #include "base.h"
 #include "error.h"
 #include "proto.h"
+#include "ip_opt.h"
 
 #define HOST_NAME_MAX 128
 #define RECV_MAX_LEN  2048
@@ -42,12 +43,15 @@ static int inline get_global_sock(int fd)
 int hostname_init(void)
 {
     strcpy(g_szHostName, "172.0.0.1");
+
+    return ERR_SUCCESS;
 }
 
 int socket_init(void)
 {
     int sock;
     int real_len;
+    TRANS_PROTO_E proto_type;
     char recv_buf[RECV_MAX_LEN + 1];
 
     bzero(recv_buf, RECV_MAX_LEN);
@@ -73,19 +77,15 @@ int socket_init(void)
         real_len = recv(sock, recv_buf, RECV_MAX_LEN, 0);
         if (real_len < 0)
         {
+            perror("recv()");
             continue ;
         }
         printf("%d bytes read\n", real_len);
-        if (real_len < 42)
+
+        if (IP_Parse(recv_buf, real_len, &proto_type) != ERR_SUCCESS)
         {
-            perror("recvfrom():");
-            printf("incomplete packet (errno is %d)\n", errno);
-            continue;
+            continue ;
         }
-        printf("proto id:");
-        printf("%02x%02x\n", recv_buf[12], recv_buf[13]);
-        printf("----------------------------IP HEADER------------------------\n");
-        printf("----------------------------TCP HEADER------------------------\n");
     }
 
     return ERR_SUCCESS;
