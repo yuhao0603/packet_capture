@@ -51,6 +51,8 @@ int socket_init(void)
 {
     int sock;
     int real_len;
+    /* ip包头长度 */
+    int ihl = 0;
     TRANS_PROTO_E proto_type;
     char recv_buf[RECV_MAX_LEN + 1];
 
@@ -75,14 +77,14 @@ int socket_init(void)
     while(1)
     {
         real_len = recv(sock, recv_buf, RECV_MAX_LEN, 0);
-        if (real_len < 0)
-        {
-            perror("recv()");
+        if (real_len < MIN_IP_HEADER_LEN) {
+            printf("got incomplete ip packet\n");
             continue ;
         }
+
         printf("%d bytes read\n", real_len);
 
-        if (IP_Parse(recv_buf, real_len, &proto_type) != ERR_SUCCESS)
+        if (IP_Parse(recv_buf, &ihl, &proto_type) != ERR_SUCCESS)
         {
             continue ;
         }

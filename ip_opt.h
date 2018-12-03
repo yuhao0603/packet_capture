@@ -7,5 +7,5 @@
 #ifndef _IP_OPT_H
 #define _IP_OPT_H
 int IP_Check(IP_HEADER_S *p_ip_head);
-int IP_Parse(char *buf, int len, TRANS_PROTO_E *p_proto_type);
+int IP_Parse(char *buf, int *len, TRANS_PROTO_E *p_proto_type);
 #endif
