@@ -1,20 +1,33 @@
 /*************************************************************************
-	> File Name: proto.h
+	> File Name: base.h
 	> Author: yuhao
 	> Mail: me.yuhao@outlook.com
-	> Created Time: 2018年12月02日 星期日 14时22分24秒
+	> Created Time: 2018年12月02日 星期日 14时35分52秒
  ************************************************************************/
 
-#ifndef _PROTO_H
-#define _PROTO_H
+#ifndef _BASE_H
+#define _BASE_H
+
+#define ERR_MSG_MAX_LEN 127
+
+typedef enum ErrCode{
+    ERROR_SUCCESS = 0,
+    ERROR_FAILED
+}RET_E;
+
+#define MyLog printf
+
+typedef unsigned int uint;
+typedef unsigned short ushort;
+typedef unsigned char uchar;
 
 typedef struct tag_IPHeader{
   #if __BYTE_ORDER == __LITTLE_ENDIAN
-    uchar head_len:4;       //4bit是ip头长
-    uchar version:4;        //前4bit版本号
+    unsigned int head_len:4;       //4bit是ip头长
+    unsigned int version:4;        //前4bit版本号
   #elif __BYTE_ORDER == __BIG_ENDIAN
-    uchar version:4;        //前4bit版本号
-    uchar head_len:4;       //4bit是ip头长
+    unsigned int version:4;        //前4bit版本号
+    unsigned int head_len:4;       //4bit是ip头长
   #else
     # error	"Please fix <bits/endian.h>"
   #endif
@@ -73,9 +86,12 @@ typedef struct tag_TCPHeader{
 #define UDP_HEADER_LEN sizeof(UDP_HEADER_S)
 #define TCP_HEADER_LEN sizeof(TCP_HEADER_S)
 
-typedef enum tagTransProtoType{
+typedef enum tagProtoType{
+    PROTO_IP,
     PROTO_TCP,
     PROTO_UDP,
+    PROTO_ICMP,
     PROTO_MAX
-}TRANS_PROTO_E;
+}PROTO_TYPE_E;
+
 #endif

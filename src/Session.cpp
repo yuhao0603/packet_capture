@@ -1,14 +1,10 @@
 /*************************************************************************
-	> File Name: error.h
+	> File Name: Session.cpp
 	> Author: yuhao
 	> Mail: me.yuhao@outlook.com
-	> Created Time: 2018年11月24日 星期六 20时34分41秒
+	> Created Time: 2019年10月20日 星期日 01时01分16秒
  ************************************************************************/
 
-#ifndef _ERROR_H
-#define _ERROR_H
+#include <iostream>
+#include "../include/Session.h"
 
-#define ERR_SUCCESS 0
-#define ERR_FAILED  1
-
-#endif

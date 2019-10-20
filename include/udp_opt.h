@@ -1,13 +1,11 @@
 /*************************************************************************
-	> File Name: base.h
+	> File Name: udp_opt.h
 	> Author: yuhao
 	> Mail: me.yuhao@outlook.com
-	> Created Time: 2018年12月02日 星期日 14时35分52秒
+	> Created Time: 2018年12月05日 星期三 20时34分31秒
  ************************************************************************/
 
-#ifndef _BASE_H
-#define _BASE_H
-typedef unsigned int uint;
-typedef unsigned short ushort;
-typedef unsigned char uchar;
+#ifndef _UDP_OPT_H
+#define _UDP_OPT_H
+int UDP_Parse(char *recv_buf, int buf_len);
 #endif
