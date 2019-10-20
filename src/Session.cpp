@@ -6,5 +6,19 @@
  ************************************************************************/
 
 #include <iostream>
+#include <netinet/in.h>
 #include "../include/Session.h"
 
+void Session::AddToSessionManager(void *header, int proto){
+    switch(proto){
+        case IPPROTO_TCP:{
+            break;
+        }
+        case IPPROTO_UDP:{
+            break;
+        }
+        default:{
+            break;
+        }
+    }
+}

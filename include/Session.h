@@ -9,7 +9,7 @@
 #define _SESSION_H
 class Session{
 private:
-    static Session *session;
+    static Session session;
     Session(){ }
     
     ~Session(){
@@ -17,19 +17,12 @@ private:
     }
 public:
     static Session *getInstance(){
-        if (session != nullptr){
-            return session;
-        }
-        else{
-            session = new Session();
-            return session;
-        }
+        return &session;
     }
 
     static void freeInstance(){
-        if (session != nullptr){
-            delete(session);
-        }
     }
+
+    void AddToSessionManager(void *header, int proto);
 };
 #endif

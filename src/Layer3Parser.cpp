@@ -13,6 +13,7 @@
 #include "../public/parser.h"
 #include "../include/Session.h"
 #include "../include/Layer3Parser.h"
+#include "../include/TcpParser.h"
 
 Layer3Parser::Layer3Parser(){
 }
@@ -46,7 +47,7 @@ void Layer3Parser::putPacketInfo(){
     printf("*******************************************\n");
     printf("****************IP HEADER******************\n");
     printf("*******************************************\n");
-    printf("包头长度:%d\n", (int)pstHeader->ihl);
+    printf("包头长度:%d\n", (int)pstHeader->ihl * 4);
     printf("Differentiated Services Field:%d\n", (int)pstHeader->tos);
     printf("ip包总长度:%d\n", (int)pstHeader->tot_len);
     printf("Identification:%d\n", (int)pstHeader->id);
@@ -59,10 +60,24 @@ void Layer3Parser::putPacketInfo(){
     printf("四层协议类型id为:%d\n", (int)pstHeader->protocol);
     printf("源ip地址为:%s\n", inet_ntoa(src_ip));
     printf("目的ip地址为:%s\n", inet_ntoa(dst_ip));
-    printf("\n\n\n\n");
+    printf("\n\n");
 }
 
 RET_E Layer3Parser::nextLayerParse(char *buf, int buf_len){
+    if (pstHeader == nullptr){
+        return ERROR_FAILED;
+    }
+    int proto = pstHeader->protocol;
+    switch(proto){
+        case IPPROTO_TCP:{
+            TcpParser tpParser;
+            tpParser.parse(buf, buf_len);
+            break;
+        }
+        default:{
+            break;
+        }
+    }
     return ERROR_SUCCESS;
 }
 
@@ -82,8 +97,8 @@ RET_E Layer3Parser::parse(char *buf, int buf_len){
     }
     
     putPacketInfo();
-    char payload_len = buf_len - pstHeader->ihl;
-    char *payload = buf + pstHeader->ihl;
+    char payload_len = buf_len - pstHeader->ihl * 4;
+    char *payload = buf + pstHeader->ihl * 4;
     return nextLayerParse(payload, payload_len);
 }
 
